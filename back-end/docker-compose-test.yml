@@ -1,0 +1,19 @@
+services:
+  db_postgres:
+    image: postgres
+    container_name: prisma_postgres
+    restart: always
+    ports:
+      - 1234:5432
+    env_file:
+      - .env.test
+
+  app:
+    container_name: app
+    build: .
+    ports:
+      - 5000:5000
+    depends_on:
+    - prisma_postgres
+    env_file:
+      - .env.test

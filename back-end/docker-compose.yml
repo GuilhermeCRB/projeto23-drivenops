@@ -1,0 +1,33 @@
+services:
+  prisma_postgres: 
+    image: postgres
+    container_name: prisma_postgres
+    restart: always
+    ports:
+      - 1234:5432
+    env_file:
+      - .env
+    volumes:
+      - pg_students:/var/lib/postgresql/data
+    networks:
+      - rede_do_students
+
+  students_app:
+    container_name: students_app
+    build: .
+    ports:
+      - 5000:5000
+    depends_on:
+      - prisma_postgres
+    env_file:
+      - .env
+    volumes:
+      - /usr/src/
+    networks:
+      - rede_do_students
+
+volumes:
+  pg_students:
+
+networks:
+  rede_do_students:
