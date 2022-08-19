@@ -6,7 +6,7 @@ services:
     ports:
       - 1234:5432
     env_file:
-      - .env
+      - ./back-end/.env
     volumes:
       - pg_students:/var/lib/postgresql/data
     networks:
@@ -14,19 +14,38 @@ services:
 
   students_app:
     container_name: students_app
-    build: .
+    build: ./back-end
     ports:
       - 5000:5000
     depends_on:
       - prisma_postgres
     env_file:
-      - .env
+      - ./back-end/.env
     volumes:
       - /usr/src/
     networks:
       - rede_do_students
 
+  students_react:
+    build: ./front-end
+    container_name: students_react
+    volumes:
+      - build_students_react:/var/www/html
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - build_students_react:/var/www/html
+    depends_on:
+      - prisma_postgres
+      - students_app
+      - students_react
+
 volumes:
+  build_students_react:
   pg_students:
 
 networks:
