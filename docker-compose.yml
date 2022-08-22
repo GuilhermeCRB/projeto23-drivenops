@@ -1,5 +1,5 @@
 services:
-  prisma_postgres: 
+  prisma_postgres:
     image: postgres
     container_name: prisma_postgres
     restart: always
@@ -9,8 +9,6 @@ services:
       - ./back-end/.env
     volumes:
       - pg_students:/var/lib/postgresql/data
-    networks:
-      - rede_do_students
 
   students_app:
     container_name: students_app
@@ -23,8 +21,6 @@ services:
       - ./back-end/.env
     volumes:
       - /usr/src/
-    networks:
-      - rede_do_students
 
   students_react:
     build: ./front-end
@@ -47,6 +43,3 @@ services:
 volumes:
   build_students_react:
   pg_students:
-
-networks:
-  rede_do_students:
